@@ -61,10 +61,10 @@ F = F';
 
 % CdV/dt + GV = F
 steps = 1000;
-steps = 10000; % for when told to increase time step at the end
+% steps = 10000; % for when told to increase time step at the end
 stepsVector = 1:steps;
 dt = 1e-3; % simulate for 1 second
-dt = 1e-4;
+% dt = 1e-4;
 trans = 0.03; 
 
 % Part A - A step that transistions from 0 to 1 at 0.03s
@@ -79,8 +79,7 @@ for i = 1:steps
         v1(:,i) = (C./dt+G)\(F+C*v0/dt);        
     end
     
-    v0 = v1(:, i);  
-    
+    v0 = v1(:, i);      
 end
 
 figure
@@ -102,7 +101,6 @@ for j = 1:steps
 
     vSinVal(1,1) = sin(2*pi*f1*j*dt);
     v2(:,j) = (C./dt+G)\(vSinVal+C*v0/dt);
-
     v0 = v2(:, j);
         
 end
@@ -115,17 +113,17 @@ plot(stepsVector+6.5,v2(3,:)*3.1)
 legend('V_{in}','V_{out}')
 title('V_{in} (Sine Function) and V_{out} vs Time')
 xlabel('Time (ms)'),ylabel('Voltage (V)')
-xlim([0 10000])
+xlim([0 1000])
+% xlim([0 10000])
 
 % Second Frequency
 f2 = 1/(2*trans);
 for j = 1:steps
-
-    vSinVal(1,1) = sin(2*pi*f2*j*dt);
-    v2(:,j) = (C./dt+G)\(vSinVal+C*v0/dt);
     
+    vSinVal(1,1) = sin(2*pi*f2*j*dt);
+    v2(:,j) = (C./dt+G)\(vSinVal+C*v0/dt);    
     v0 = v2(:, j);
-        
+    
 end
 
 figure
@@ -136,7 +134,8 @@ plot(stepsVector+6.5,v2(3,:)*3.1)
 legend('V_{in}','V_{out}')
 title('V_{in} (Sine Function) and V_{out} vs Time')
 xlabel('Time (ms)'),ylabel('Voltage (V)')
-xlim([0 10000])
+xlim([0 1000])
+% xlim([0 10000])
 
 % Part C - Guassian with a mag=1, std dev. = 0.03s and a delay of 0.06s.
 % Gaus = mag*exp(-1/2*((x-mu)/sigma)^2)
@@ -150,8 +149,7 @@ mu = 0.06; % Delay
 for k = 1:steps
     
     vGaussVal(1,1) = exp(-1/2*((k/steps-mu)/(sig))^2);        
-    v3(:,k) = (C./dt+G)\(vGaussVal+C*v0/dt);   
-    
+    v3(:,k) = (C./dt+G)\(vGaussVal+C*v0/dt);    
     v0 = v3(:, k);        
 end
 
@@ -163,12 +161,13 @@ plot(stepsVector-10,v3(3,:)*7.5)
 legend('V_{in}','V_{out}')
 title('V_{in} (Gauss Function) and V_{out} vs Time')
 xlabel('Time (ms)'),ylabel('Voltage (V)')
-xlim([0 10000])
+xlim([0 1000])
+% xlim([0 10000])
 
 % Part D - Frequency Functions
 
 fRange = -500:499; % length must = length(steps)
-fRange = -5000:4999; % new fRange for new Steps
+% fRange = -5000:4999; % new fRange for new Steps
 
 % Step Function Frequency 
 v1InFourier = fft(v1(1, :));
@@ -191,7 +190,7 @@ v2Fourier = fft(v2.');
 v2Shift = fftshift(v2Fourier);
 
 figure
-plot(fRange, 20*log10(abs(v2Shift(:,7)/45)))
+plot(fRange,20*log10(abs(v2Shift(:,7)/45)))
 grid on
 hold on
 plot(fRange,20*log10(abs(v2Shift(:,7)/4.5)))
